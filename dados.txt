@@ -1,0 +1,66 @@
+AMIGO OCULTO 
+
+Planejamento banco de dados:
+
+ - EVENTOS
+ - GRUPOS
+ - PESSOAS
+
+
+→ events
+ - id int pk auto_incremment
+ - status boolean default=false
+ - title string
+ - description string
+ - grouped boolean default=false
+
+→ eventGroups
+ - id int pk auto_incremment
+ - id_event int (relacionado a events.id)
+ - name string
+
+→ eventPeople
+ - id int pk auto_incremment
+ - id_event int (relacionado a events.id)
+ - id_group int (relacionado a eventsGroups.id)
+ - name string
+ - phone string
+ - matched string default=""
+
+
+
+
+
+Planejamento de rotas:
+	
+	ROTAS DOS EVENTOS:
+ - GET /admin/events → BUSCA TODOS OS EVENTOS
+ - GET /admin/events/:id → BUSCA UM EVENTO COM BASE NO ID
+ - POST /admin/events → CRIA UM EVENTO
+ - PUT /admin/events/:id → ATUALIZA UM EVENTO
+ - DELETE /admin/events/:id → DELETA UM EVENTO
+
+
+	ROTAS DO GRUPOS:
+ Um grupo sempre faz parte de um evento, então na rota do grupo precisa ter a identificação do pai desse grupo. Para criar um grupo novo preciso saber de    
+ qual evento ele faz parte.
+ - GET /admin/events/:id_event/groups → AQUI ESTOU IDENTIFICANDO OS GRUPOS DE UM DETERMINADO EVENTO
+ - GET /admin/events/:id_event/groups/:id → BUSCA UM GRUPO ESPECÍFICO COM BASE NO ID DO GRUPO
+ - POST /admin/events/:id_event/groups → CRIA GRUPOS DIFERENTES EM UM EVENTO ESPECÍFICO
+ - PUT /admin/events/:id_event/groups/:id → ATUALIZA UM GRUPO ESPECÍFICO
+ - DELETE /admin/events/:id_event/groups/:id → DELETA UM GRUPO ESPECÍFICO
+
+
+	ROTAS DAS PESSOAS:
+ - GET /admin/events/:id_event/groups/:id_group/people → BUSCA TODAS AS PESSOAS DE CADA GRUPO DE UM EVENTO
+ - GET /admin/events/:id_event/groups/:id_group/people/:id → BUSCA UMA PESSOA ESPECÍFICA
+ - POST /admin/events/:id_event/groups/:id_group/people → REGISTRAR UMA PESSOA
+ - PUT /admin/events/:id_event/groups/:id_group/people/:id → ATUALIZA DADOS DE UMA PESSOA
+ - DELETE /admin/events/:id_event/groups/:id_group/people/:id → DELETA UMA PESSOA
+
+
+
+	ROTAS PUBLICAS
+ - GET /events/:id
+ - GET /events/:id_event/person/:tel → IDENTIFICA A PESSOA, VERIFICA SE ELA ESTÁ NO EVENTO E JÁ FAZ O SORTEIO - TAMBÉM PODE SER POR QUERY STRING ↓
+ - GET /events/:id_event/person?tel=910792002
